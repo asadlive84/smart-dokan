@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"fmt"
 	"smart-dokan/usersvc/internal/utility"
 
 	"github.com/google/uuid"
@@ -15,16 +16,19 @@ type User struct {
 	Password    string    `json:"password,omitempty"`
 }
 
-func NewUser(user *User) *User {
+func NewUser(user *User) (*User, error) {
 	hasedPasswd, err := utility.HashPassword(user.Password)
 	if err != nil {
-		return nil
+		return nil, err
+	}
+	if user.FirstName == "" || user.LastName == "" || user.PhoneNumber == "" || user.Email == ""  || user.Password == ""{
+		return nil, fmt.Errorf("%+v", "field are missing, please check")
 	}
 	return &User{
-		Email:       user.Email,
 		FirstName:   user.FirstName,
 		LastName:    user.LastName,
 		PhoneNumber: user.PhoneNumber,
+		Email:       user.Email,
 		Password:    hasedPasswd,
-	}
+	}, nil
 }

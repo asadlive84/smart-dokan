@@ -36,17 +36,19 @@ func NewAdapter(d DBConfig) (*Adapter, error) {
 		"file://../internal/adapters/db/migrations",
 		databaseUrl+"?sslmode=disable")
 	if err != nil {
-		log.Fatal(err)
+		log.Println("folder isn't detect!")
+		return nil, err
 	}
 
 	if err := m.Up(); err != nil {
 		if err == migrate.ErrNoChange {
 			log.Println("No new migration to apply")
 		} else {
-			log.Fatalf("Migration failed: %v", err)
+			log.Println("Migration failed: %v", err)
+			return nil, err
 		}
 	}
-	
+
 	return &Adapter{
 		db: pool,
 	}, nil

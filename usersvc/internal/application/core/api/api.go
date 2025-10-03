@@ -15,8 +15,8 @@ func NewApplication(db ports.DBPort) *Application {
 }
 
 func (app *Application) CreateUser(user *domain.User) (*domain.User, error) {
-	user = domain.NewUser(user)
-	if user == nil {
+	user, err := domain.NewUser(user)
+	if err != nil {
 		return nil, fmt.Errorf("%+v", "user validation issue")
 	}
 	id, err := app.db.Insert(user)
