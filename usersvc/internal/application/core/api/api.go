@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"smart-dokan/usersvc/internal/application/core/domain"
 	"smart-dokan/usersvc/internal/ports"
 )
@@ -14,6 +15,10 @@ func NewApplication(db ports.DBPort) *Application {
 }
 
 func (app *Application) CreateUser(user *domain.User) (*domain.User, error) {
+	user = domain.NewUser(user)
+	if user == nil {
+		return nil, fmt.Errorf("%+v", "user validation issue")
+	}
 	id, err := app.db.Insert(user)
 	if err != nil {
 		return nil, err

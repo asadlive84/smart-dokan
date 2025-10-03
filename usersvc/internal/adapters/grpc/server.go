@@ -17,6 +17,7 @@ func (a *Adapter) CreateUser(c context.Context, userReq *pb.CreateUserRequest) (
 		LastName:    userReq.LastName,
 		Email:       userReq.Email,
 		PhoneNumber: userReq.PhoneNumber,
+		Password:    userReq.Password,
 	})
 
 	fmt.Printf("Error: %+v\n", err)

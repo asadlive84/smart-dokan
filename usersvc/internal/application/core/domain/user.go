@@ -1,6 +1,10 @@
 package domain
 
-import "github.com/google/uuid"
+import (
+	"smart-dokan/usersvc/internal/utility"
+
+	"github.com/google/uuid"
+)
 
 type User struct {
 	ID          uuid.UUID `json:"id"`
@@ -11,10 +15,16 @@ type User struct {
 	Password    string    `json:"password,omitempty"`
 }
 
-func NewUser(id uuid.UUID, username, email, password string) *User {
+func NewUser(user *User) *User {
+	hasedPasswd, err := utility.HashPassword(user.Password)
+	if err != nil {
+		return nil
+	}
 	return &User{
-		ID:       id,
-		Email:    email,
-		Password: password,
+		Email:       user.Email,
+		FirstName:   user.FirstName,
+		LastName:    user.LastName,
+		PhoneNumber: user.PhoneNumber,
+		Password:    hasedPasswd,
 	}
 }

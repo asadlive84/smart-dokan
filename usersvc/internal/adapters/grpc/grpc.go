@@ -36,7 +36,9 @@ func (a *Adapter) Run() {
 		log.Fatalf("failed to listen on port %s, error: %v", a.port, err)
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(UnaryLoggerInterceptor),
+	)
 
 	pb.RegisterUserServiceServer(grpcServer, a)
 
